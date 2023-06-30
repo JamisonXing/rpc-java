@@ -9,3 +9,4 @@
 *.class
 *.xml
 *.iml
+../target
