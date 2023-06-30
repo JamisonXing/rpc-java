@@ -1,5 +1,8 @@
 package com.jamison.version1.common;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +12,8 @@ import java.io.Serializable;
  * 这样服务端就能根据这些信息根据反射调用相应的方法
  * 使用Java自带的序列化方式（实现接口）
  */
+@Data
+@Builder
 public class RPCRequest implements Serializable {
     //服务类名
     private String interfaceName;
