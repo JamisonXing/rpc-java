@@ -1,23 +1,22 @@
 package com.jamison.version2.server;
 
-import com.jamison.version0.server.RPCServer;
-import com.jamison.version2.common.Blog;
-import com.jamison.version2.service.BlogService;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SimpleTimeZone;
+import com.jamison.version2.service.BlogService;
+import com.jamison.version2.service.UserService;
 
 public class TestServer {
     public static void main(String[] args) {
-        UserServiceImpl userService = new UserServiceImpl();
-        BlogServiceImpl blogService = new BlogServiceImpl();
-        Map<String, Object> serviceProvide = new HashMap<>();
-        //暴露两个服务接口
-        serviceProvide.put("com.jamison.version2.service.UserService", userService);
-        serviceProvide.put("com.jamison.version2.service.BlogService", blogService);
+        UserService userService = new UserServiceImpl();
+        BlogService blogService = new BlogServiceImpl();
 
-        SimpleRPCServer simpleRPCServer = new SimpleRPCServer(serviceProvide);
-        simpleRPCServer.start(8899);
+//        Map<String, Object> serviceProvide = new HashMap<>();
+//        serviceProvide.put("com.ganghuan.myRPCVersion2.service.UserService",userService);
+//        serviceProvide.put("com.ganghuan.myRPCVersion2.service.BlogService",blogService);
+        ServiceProvider serviceProvider = new ServiceProvider();
+        serviceProvider.provideServiceInterface(userService);
+        serviceProvider.provideServiceInterface(blogService);
+
+        RPCServer RPCServer = new ThreadPoolRPCRPCServer(serviceProvider);
+        RPCServer.start(8899);
     }
 }
