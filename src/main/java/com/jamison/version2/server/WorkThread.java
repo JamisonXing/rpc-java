@@ -1,5 +1,6 @@
 package com.jamison.version2.server;
 
+
 import com.jamison.version2.common.RPCRequest;
 import com.jamison.version2.common.RPCResponse;
 import lombok.AllArgsConstructor;
@@ -10,13 +11,16 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
-import java.util.Map;
 
-
+/**
+ * 这里负责解析得到的request请求，执行服务方法，返回给客户端
+ * 1. 从request得到interfaceName 2. 根据interfaceName在serviceProvide Map中获取服务端的实现类
+ * 3. 从request中得到方法名，参数， 利用反射执行服务中的方法 4. 得到结果，封装成response，写入socket
+ */
 @AllArgsConstructor
 public class WorkThread implements Runnable{
     private Socket socket;
-    private Map<String, Object> serviceProvide;
+    private ServiceProvider serviceProvider;
     @Override
     public void run() {
         try {
@@ -35,15 +39,15 @@ public class WorkThread implements Runnable{
         }
     }
 
-    private RPCResponse getResponse(RPCRequest request) {
-        //得到服务名
+    private RPCResponse getResponse(RPCRequest request){
+        // 得到服务名
         String interfaceName = request.getInterfaceName();
-        //得到服务端相应服务实现类
-        Object service = serviceProvide.get(interfaceName);
-        //反射调用方法
+        // 得到服务端相应服务实现类
+        Object service = serviceProvider.getService(interfaceName);
+        // 反射调用方法
         Method method = null;
-        try{
-            method = service.getClass().getMethod(request.getMethodName(), request.getParamsType());
+        try {
+            method = service.getClass().getMethod(request.getMethodName(), request.getParamsTypes());
             Object invoke = method.invoke(service, request.getParams());
             return RPCResponse.success(invoke);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -51,6 +55,5 @@ public class WorkThread implements Runnable{
             System.out.println("方法执行错误");
             return RPCResponse.fail();
         }
-
     }
 }
