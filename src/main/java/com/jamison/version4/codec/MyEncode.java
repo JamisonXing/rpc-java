@@ -1,11 +1,12 @@
 package com.jamison.version4.codec;
 
+import com.jamison.version4.common.RPCRequest;
+import com.jamison.version4.common.RPCResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.AllArgsConstructor;
 
-import java.awt.*;
 
 /**
  * 依次按照自定义的消息格式写入，传入的数据为Request或者Response
