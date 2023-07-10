@@ -28,7 +28,7 @@ public class JsonSerializer implements Serializer{
                 for(int i = 0; i < objects.length; i++) {
                     Class<?> paramsType = request.getParamsTypes()[i];
                     if(!paramsType.isAssignableFrom(request.getParams()[i].getClass())) {
-                        JSONObject.toJavaObject((JSONObject)request.getParams()[i], request.getParamsType()[i]);
+                        JSONObject.toJavaObject((JSONObject)request.getParams()[i], request.getParamsTypes()[i]);
                     } else {
                         objects[i] = request.getParams()[i];
                     }
