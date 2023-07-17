@@ -2,8 +2,8 @@ package com.jamison.version5.server;
 
 
 
-import com.ganghuan.myRPCVersion5.common.RPCRequest;
-import com.ganghuan.myRPCVersion5.common.RPCResponse;
+import com.jamison.version5.common.RPCRequest;
+import com.jamison.version5.common.RPCResponse;
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
